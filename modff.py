@@ -1,5 +1,5 @@
-# BombSquad Auto Message Plugin
-# Clean Version - No Hidden Characters
+# ba_meta require api 8
+# ba_meta export plugin
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from bauiv1lib import chatmessage as CM
 
 
 # =========================
-# Helper: Clean Text
+# Text Cleaner (No Hidden Characters)
 # =========================
 def clean_text(text: str) -> str:
     zero_chars = [
@@ -24,7 +24,7 @@ def clean_text(text: str) -> str:
 
 
 # =========================
-# Auto Message System
+# Auto Messenger System
 # =========================
 class AutoMessenger:
 
@@ -34,7 +34,6 @@ class AutoMessenger:
         self.message = "Hello!"
         self.timer: babase.AppTimer | None = None
 
-    # Start
     def start(self):
         if self.enabled:
             bui.screenmessage("Auto already running", color=(1, 1, 0))
@@ -44,12 +43,10 @@ class AutoMessenger:
         bui.screenmessage("Auto Message Started", color=(0, 1, 0))
         self._loop()
 
-    # Stop
     def stop(self):
         self.enabled = False
         bui.screenmessage("Auto Message Stopped", color=(1, 0, 0))
 
-    # Loop
     def _loop(self):
         if not self.enabled:
             return
@@ -62,7 +59,6 @@ class AutoMessenger:
 
         self.timer = babase.AppTimer(self.interval, self._loop)
 
-    # Setters
     def set_message(self, text: str):
         self.message = clean_text(text)
         bui.screenmessage(f"Msg: {self.message}", color=(0, 1, 1))
@@ -72,12 +68,11 @@ class AutoMessenger:
         bui.screenmessage(f"Interval: {self.interval}", color=(0, 1, 1))
 
 
-# Global instance
 auto = AutoMessenger()
 
 
 # =========================
-# Chat Command Hook
+# Chat Command Handler
 # =========================
 def handle_command(msg: str):
     if not msg.startswith("/auto"):
@@ -113,16 +108,19 @@ def handle_command(msg: str):
 
 
 # =========================
-# Plugin Entry
+# Plugin Main Class
 # =========================
-class Plugin(babase.Plugin):
+class modff(babase.Plugin):
 
     def on_app_running(self) -> None:
-        old = bui.chatmessage
+        bui.screenmessage("modff by Hamid Loaded ✅", color=(0, 1, 0))
+
+        # Hook chat
+        old_chat = bui.chatmessage
 
         def new_chat(msg: str, *args, **kwargs):
             if handle_command(msg):
                 return
-            return old(msg, *args, **kwargs)
+            return old_chat(msg, *args, **kwargs)
 
         bui.chatmessage = new_chat
