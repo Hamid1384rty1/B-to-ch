@@ -1,5 +1,72 @@
-# ba_meta require api 8
-# ba_meta export plugin
+from babase import (
+    clipboard_is_supported as CIS,
+    clipboard_get_text as CGT,
+    clipboard_has_text as CHT,
+    Plugin
+)
+from bauiv1 import (
+    get_special_widget as gsw,
+    containerwidget as cw,
+    screenmessage as push,
+    checkboxwidget as chk,
+    scrollwidget as sw,
+    buttonwidget as bw,
+    SpecialChar as sc,
+    textwidget as tw,
+    checkboxwidget as cb,
+    gettexture as gt,
+    apptimer as teck,
+    getsound as gs,
+    UIScale as uis,
+    charstr as cs,
+    app as APP,
+    Call
+)
+from bascenev1 import (
+    get_chat_messages as GCM,
+    chatmessage as CM,
+    get_connection_to_host_info_2 as get_connection_info,
+    connect_to_party as original_connect,
+    disconnect_from_host as original_disconnect,
+    get_foreground_host_activity
+)
+from _babase import get_string_width as strw
+from datetime import datetime as DT
+from bauiv1lib import party
+from babase import apptimer as teck
+from bauiv1lib.popup import PopupWindow, PopupMenu
+from typing import Sequence, Tuple, Optional, Callable
+from bauiv1lib.colorpicker import ColorPicker
+import random
+from bauiv1lib.party import PartyWindow
+from bauiv1lib.ingamemenu import InGameMenuWindow
+import math
+import json
+import os
+import socket
+import threading
+import time
+import re
+import bascenev1 as bs
+import bauiv1 as bui
+import _babase
+import babase
+import bascenev1 as bs
+import bauiv1 as bui
+
+# --- Import های جدید برای Account Switcher ---
+from bauiv1lib.confirm import ConfirmWindow
+from bauiv1lib.account.settings import AccountSettingsWindow
+from os import listdir, path, mkdir, remove
+from shutil import copy, rmtree
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Optional
+
+
+# ba_meta require api 9
+# ba_meta export babase.Plugin
 
 from __future__ import annotations
 
@@ -110,12 +177,11 @@ def handle_command(msg: str):
 # =========================
 # Plugin Main Class
 # =========================
-class modff(babase.Plugin):
+class ModFFPlugin(babase.Plugin):
 
     def on_app_running(self) -> None:
         bui.screenmessage("modff by Hamid Loaded ✅", color=(0, 1, 0))
 
-        # Hook chat
         old_chat = bui.chatmessage
 
         def new_chat(msg: str, *args, **kwargs):
